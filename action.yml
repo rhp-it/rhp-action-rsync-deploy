@@ -38,6 +38,7 @@ runs:
     - ${{ inputs.PRIVATE_SSH_KEY }}
     - ${{ inputs.REPOSITORY_PATH }}
     - ${{ inputs.SERVER_PATH }}
+    - ${{ inputs.DRY_RUN }}
 
 branding:
   icon: 'upload-cloud'
