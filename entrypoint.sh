@@ -26,8 +26,8 @@ fi
 echo "Uploading files..."
 if [ ${INPUT_REPOSITORY_PATH:0:1} = "/" ]
 then
-  rsync --dry-run --delete-after --filter=':- .gitignore' -avz $GITHUB_WORKSPACE/${INPUT_REPOSITORY_PATH:1} server:$INPUT_SERVER_PATH
+  rsync --dry-run --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore' --delete-after -avz $GITHUB_WORKSPACE/${INPUT_REPOSITORY_PATH:1} server:$INPUT_SERVER_PATH
 else
-  rsync --dry-run --delete-after --filter=':- .gitignore' -avz $GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH server:$INPUT_SERVER_PATH
+  rsync --dry-run --include='**.gitignore' --exclude='/.git' --filter=':- .gitignore' --delete-after -avz $GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH server:$INPUT_SERVER_PATH
 fi
 echo "Upload finished."
