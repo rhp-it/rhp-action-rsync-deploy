@@ -2,6 +2,7 @@
 
 COLOR_RED='\033[0;31m'
 COLOR_DEFAULT='\033[0m'
+COLOR_YELLOW='\033[0;33m'
 
 # Prepare SSH connection
 mkdir -p /root/.ssh/
@@ -22,12 +23,18 @@ if  [[ ! $INPUT_SERVER_PATH =~ "(public_html|vhosts)/(.*)/" ]]; then
    exit 1
 fi
 
+OPT_DRY_RUN = ''
+if [ ${INPUT_DRYRUN} = "true" ]; then
+    OPT_DRY_RUN = '--dry-run'
+    echo -e "${COLOR_YELLOW}DRY RUN MODE. Rsync will do nothing. Set the DRY_RUN option of this workflow to false to actually enable rsync.${COLOR_DEFAULT}"
+fi
+
 # The actual upload
 echo "Uploading files..."
 if [ ${INPUT_REPOSITORY_PATH:0:1} = "/" ]
 then
-  rsync --include='**.gitignore' --exclude='/public/*/' --exclude='/.git' --filter=':- .gitignore' --delete-after -avz $GITHUB_WORKSPACE/${INPUT_REPOSITORY_PATH:1} server:$INPUT_SERVER_PATH
+  rsync ${OPT_DRY_RUN} --include='**.gitignore' --exclude='/public/*/' --exclude='/.git' --filter=':- .gitignore' --delete-after -avz $GITHUB_WORKSPACE/${INPUT_REPOSITORY_PATH:1} server:$INPUT_SERVER_PATH
 else
-  rsync --include='**.gitignore' --exclude='/public/*/' --exclude='/.git' --filter=':- .gitignore' --delete-after -avz $GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH server:$INPUT_SERVER_PATH
+  rsync ${OPT_DRY_RUN} --include='**.gitignore' --exclude='/public/*/' --exclude='/.git' --filter=':- .gitignore' --delete-after -avz $GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH server:$INPUT_SERVER_PATH
 fi
 echo "Upload finished."
