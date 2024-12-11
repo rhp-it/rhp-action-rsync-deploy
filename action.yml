@@ -23,7 +23,11 @@ inputs:
   SERVER_PATH:
     description: 'server path / destination'
     required: true
-
+  DRY_RUN:
+    description: 'do a rsync dry-run'
+    type: boolean
+    default: true
+  
 runs:
   using: 'docker'
   image: 'Dockerfile'
