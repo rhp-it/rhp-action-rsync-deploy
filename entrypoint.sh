@@ -13,12 +13,18 @@ Host server
     IdentityFile /root/.ssh/id_rsa.key
 END
 
-# Uploading the file-s
-echo starting to upload file/-s...
+# Hardwired path checks to prevent accidents
+if  [[ ! $INPUT_SERVER_PATH =~ "(public_html|vhosts)/(.*)/" ]]; then
+   echo "Path check failed. Please ensure that you use something inside public_html/*/ or vhost/*/ as a deploy target path"
+   exit 1
+fi
+
+# The actual upload
+echo "Uploading files..."
 if [ ${INPUT_REPOSITORY_PATH:0:1} = "/" ]
 then
   rsync --dry-run --delete-after -avz $GITHUB_WORKSPACE/${INPUT_REPOSITORY_PATH:1} server:$INPUT_SERVER_PATH
 else
   rsync --dry-run --delete-after -avz $GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH server:$INPUT_SERVER_PATH
 fi
-echo finished uploading...
+echo "Upload finished."
