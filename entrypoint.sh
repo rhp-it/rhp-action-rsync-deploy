@@ -17,8 +17,8 @@ END
 echo starting to upload file/-s...
 if [ ${INPUT_REPOSITORY_PATH:0:1} = "/" ]
 then
-  rsync --dry-run -avz $GITHUB_WORKSPACE/${INPUT_REPOSITORY_PATH:1} server:$INPUT_SERVER_PATH
+  rsync --dry-run --delete-after -avz $GITHUB_WORKSPACE/${INPUT_REPOSITORY_PATH:1} server:$INPUT_SERVER_PATH
 else
-  rsync --dry-run -avz $GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH server:$INPUT_SERVER_PATH
+  rsync --dry-run --delete-after -avz $GITHUB_WORKSPACE/$INPUT_REPOSITORY_PATH server:$INPUT_SERVER_PATH
 fi
 echo finished uploading...
