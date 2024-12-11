@@ -19,11 +19,10 @@ inputs:
   REPOSITORY_PATH:
     description: 'path of the file-s to deploy'
     required: false
-    default: '*'
+    default: '/*'
   SERVER_PATH:
     description: 'server path / destination'
-    required: false
-    default: '~/'
+    required: true
 
 runs:
   using: 'docker'
